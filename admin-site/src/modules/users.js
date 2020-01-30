@@ -12,7 +12,9 @@ export const addUser = user => ({
     type: ADD_USER, 
     user: {
         ...user,
-        id: nextID++
+        id: nextID++,
+        createAt: new Date().toString(),
+        isDeleted: 0
     }
 });
 export const getUsers = () => ({ type: GET_USERS });
@@ -25,15 +27,15 @@ const initialState = [
     {
         id: 0,
         name: 'gorilla-Kim',
-        birthday: 960322,
+        birthday: "960322",
         email: '00ghks22@naver.com',
-        createAt: new Date().getTime,
+        createAt: new Date().toString(),
         isDeleted: 0
     }
 ];
 
 // reducer
-export default function user(state = initialState, action) {
+export default function users(state = initialState, action) {
     switch (action.type) {
         case ADD_USER:
             return state.concat(action.user);
@@ -47,10 +49,7 @@ export default function user(state = initialState, action) {
         case UPDATE_USER:
             return state = state.map(user => {
                 if(user.id === action.id){
-                    const { name, birthday, email } = action.data;
-                    user.name = name;
-                    user.birthday = birthday;
-                    user.email = email;
+                    user = {...user, ...action.data};
                 }
                 return user;
             })

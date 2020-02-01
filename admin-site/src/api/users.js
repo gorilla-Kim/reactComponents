@@ -34,5 +34,5 @@ export const getUsers = async () => {
 
 export const getUserById = async id => {
   await sleep(500);
-  return users.filter(user => user.id === id);
+  return users.filter(user => user.id === id)[0];
 }

@@ -9,17 +9,20 @@ import rootReducer from './modules';
 import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension'; 
 import ReduxThunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(
-    rootReducer, 
-    composeWithDevTools(applyMiddleware(ReduxThunk, logger))
+  rootReducer, 
+  composeWithDevTools(applyMiddleware(ReduxThunk, logger))
 );
 
 ReactDOM.render(
+  <BrowserRouter>
     <Provider store={store}>
-        <App />
-    </Provider>, 
-    document.getElementById('root')
+      <App />
+    </Provider>
+  </BrowserRouter>, 
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

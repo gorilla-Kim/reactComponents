@@ -1,5 +1,5 @@
 import * as usersAPI from '../api/users';
-import { reducerUtils, createPromiseThunk } from '../lib/asyncUtils';
+import { reducerUtils, createPromiseThunk, handleAsyncActions } from '../lib/asyncUtils';
 
 // state
 const GET_USERS = 'user/GET_USERS';
@@ -39,6 +39,9 @@ const initialState = {
 };
 
 // reducer
+const getUsersReducer = handleAsyncActions(GET_USERS, 'users');
+const getUserReducer = handleAsyncActions(GET_USER, 'user');
+
 export default function users(state = initialState, action) {
     switch (action.type) {
         case ADD_USER:
@@ -59,36 +62,14 @@ export default function users(state = initialState, action) {
             });
 
         case GET_USERS:
-            return {
-                ...state,
-                users: reducerUtils.loading()
-            };
         case GET_USERS_SUCCESS:
-            return {
-                ...state,
-                users: reducerUtils.success(action.payload)
-            };
         case GET_USERS_ERROR:
-            return {
-                ...state,
-                users: reducerUtils.error(action.payload)
-            };
+            return getUsersReducer(state, action)
 
         case GET_USER:
-            return {
-                ...state,
-                user: reducerUtils.loading()
-            };
         case GET_USER_SUCCESS:
-            return {
-                ...state,
-                user: reducerUtils.success(action.payload)
-            };
         case GET_USER_ERROR:
-            return {
-                ...state,
-                user: reducerUtils.error(action.payload)
-            };
+            return getUserReducer(state, action)
 
         default:
             return state;

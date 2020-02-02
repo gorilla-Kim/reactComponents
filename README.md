@@ -22,3 +22,6 @@
     * redux에서 사용할 reducer파일들을 만들어 관리하는 곳
     * index.js에서 모든 reducer들을 combine한다.
 
+### JSON_SERVER
+
+`npx json-server ./data.json --port 4000`

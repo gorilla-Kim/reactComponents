@@ -1,5 +1,5 @@
 import * as usersAPI from '../api/users';
-import { reducerUtils, createPromiseThunk, handleAsyncActions } from '../lib/asyncUtils';
+import { reducerUtils, createPromiseThunk, handleAsyncActions, createPromiseThunkById, handleAsyncActionsById } from '../lib/asyncUtils';
 
 // state
 const GET_USERS = 'user/GET_USERS';
@@ -16,24 +16,7 @@ const DELETE_USER = 'user/DELETE_USER';
 
 export const getUsers = createPromiseThunk(GET_USERS, usersAPI.getUsers);
 // export const getUser = createPromiseThunk(GET_USER, usersAPI.getUserById);
-export const getUser = id => async dispatch => {
-    dispatch({ type: GET_USER, meta: id });
-    try {
-        const payload = await usersAPI.getUserById(id);;
-        dispatch({
-            type: GET_USER_SUCCESS,
-            payload,
-            meta: id
-        });
-    } catch (error) {
-        dispatch({
-            type: GET_USER_ERROR,
-            payload: error,
-            error: true,
-            meta: id
-        });
-    }
-}
+export const getUser = createPromiseThunkById(GET_USER, usersAPI.getUserById)
 
 export const clearUser = () => ({ type: CLEAR_USER });
 
@@ -62,37 +45,7 @@ const initialState = {
 // reducer
 const getUsersReducer = handleAsyncActions(GET_USERS, 'users', true);
 // const getUserReducer = handleAsyncActions(GET_USER, 'user');
-const getUserReducer = (state, action) => {
-    const id = action.meta;
-    switch (action.type) {
-        case GET_USER:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    [id] : reducerUtils.loading( state.user[id] && state.user[id].data )
-                }
-            }
-        case GET_USER_SUCCESS:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    [id] : reducerUtils.success( action.payload )
-                }
-            }
-        case GET_USER_ERROR:
-            return {
-                ...state,
-                user: {
-                    ...state.user,
-                    [id] : reducerUtils.error( action.payload )
-                }
-            }
-        default:
-            return state;
-    }
-}
+const getUserReducer = handleAsyncActionsById(GET_USER, 'user', true);
 
 export default function users(state = initialState, action) {
     switch (action.type) {

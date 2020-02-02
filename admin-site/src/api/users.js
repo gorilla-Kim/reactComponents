@@ -1,11 +1,12 @@
+import axios from 'axios';
 // const sleep = n => new Promise(resolve => setTimeout(resolve, n));
 
 export const getUsers = async () => {
-  await sleep(500);
-  return users;
+  const response = await axios.get('http://localhost:4000/users');
+  return response.data;
 }
 
 export const getUserById = async id => {
-  await sleep(500);
-  return users.filter(user => user.id === id)[0];
+  const response = await axios.get(`http://localhost:4000/users/${id}`);
+  return response.data;
 }

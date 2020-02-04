@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const UserItem = ({ user }) => {
   return (
     <li>
-      <Link to={`/${user.id}`}>{user.name}</Link>
+      <Link to={`/user/${user.id}`}>{user.name}</Link>
     </li>
   )
 }
